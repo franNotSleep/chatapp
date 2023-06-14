@@ -1,17 +1,10 @@
 import { Container, Paper, Typography } from "@mui/material";
 
-import { User } from "./Home.tsx";
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../contexts/userContext.tsx";
 
 function Profile() {
-  const navigate = useNavigate(); 
-  const user: User | null = JSON.parse(localStorage.getItem("userInfo") || "null");
-
-  if (!user) {
-    navigate("/login/");
-  }
-
-  console.log(user);
+  const { user } = useContext(UserContext);
 
   return (
     <Container>

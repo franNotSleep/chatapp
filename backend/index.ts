@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
+import messageRouter from "./routes/messages.js";
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/users/", userRoute);
+app.use("/api/message/", messageRouter);
 
 // Error Middleware
 app.use(errorHandler);

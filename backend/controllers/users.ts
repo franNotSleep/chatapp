@@ -74,6 +74,23 @@ const registerUser = asyncHandler(
   }
 );
 
+
+// @desc Get all users
+// @route GET /api/users/
+// @access Private 
+const getUsers = asyncHandler(
+  async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
+
+    const users = await User.find();
+
+    res.status(200).json({users});
+  }
+);
+
 // @desc Logout user
 // @route Post /api/users/logout
 // @access Public
@@ -137,4 +154,5 @@ export {
   getUserProfile,
   registerUser,
   logoutUser,
+  getUsers,
 };

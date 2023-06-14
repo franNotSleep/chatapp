@@ -1,14 +1,8 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import { axiosService, fetcher } from '../helper/axios';
-import { useNavigate } from 'react-router-dom';
-
-import useSWR from "swr";
+import { Button, Typography, Toolbar, Box, AppBar } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import { axiosService } from "../helper/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -16,18 +10,18 @@ export default function Navbar() {
   const handleLogout = () => {
     axiosService
       .post("/users/logout")
-      .then(_ => {
+      .then((_) => {
         navigate("/login/");
         localStorage.removeItem("userInfo");
       })
       .catch((e) => {
         console.log(e);
-      })
-  }
+      });
+  };
 
   const handleToProfile = () => {
     navigate("/profile/");
-  }
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -42,11 +36,20 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            onClick={() => navigate("/")}
+            sx={{ flexGrow: 1, cursor: "pointer" }}
+          >
             ChatApp
           </Typography>
-          <Button color="inherit" onClick={handleToProfile}>Profile</Button>
-          <Button color="inherit" onClick={handleLogout}>Logout</Button>
+          <Button color="inherit" onClick={handleToProfile}>
+            Profile
+          </Button>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Toolbar></Toolbar>
