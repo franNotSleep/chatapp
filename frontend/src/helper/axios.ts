@@ -8,8 +8,6 @@ const axiosService = axios.create({
   withCredentials: true,
 });
 
-const fetcher = (url: string) => {
-  axiosService.get(url).then((res) => res.data);
-};
+const fetcher = (url: string) => axiosService.get(url).then((res) => res.data);
 
 export { fetcher, axiosService };

@@ -15,12 +15,12 @@ const messageScheme = new Schema<IMessage>({
   },
   to: {
     type: Schema.Types.ObjectId,
-    ref: "Auth",
+    ref: "Chat",
     required: true
   },
   from: {
     type: Schema.Types.ObjectId,
-    ref: "Auth",
+    ref: "User",
     required: true
   }
 }, { timestamps: true });

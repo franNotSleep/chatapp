@@ -85,7 +85,7 @@ const getUsers = asyncHandler(
     next: NextFunction
   ) => {
 
-    const users = await User.find();
+    const users = await User.find({ _id: { $ne: req.user?._id }});
 
     res.status(200).json({users});
   }

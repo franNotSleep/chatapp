@@ -10,6 +10,7 @@ import cors from "cors";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import messageRouter from "./routes/messages.js";
+import chatRouter from "./routes/chats.js";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/users/", userRoute);
 app.use("/api/message/", messageRouter);
+app.use("/api/chat/", chatRouter);
 
 // Error Middleware
 app.use(errorHandler);

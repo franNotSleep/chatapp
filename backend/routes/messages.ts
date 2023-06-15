@@ -9,7 +9,7 @@ messageRouter
   .get("/", protect ,getMessage);
 
 messageRouter
-  .route("/:toId")
+  .route("/:chatId")
   .get(protect ,getMessageTo)
   .post(protect, createMessage);
 
