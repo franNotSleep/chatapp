@@ -1,14 +1,22 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../contexts/userContext";
 
-import { Box, FilledInput, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import {
+  Box,
+  FilledInput,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
 import { axiosService } from "../../helper/axios";
 
 type MessageFormProps = {
   currentChat: string;
-}
+};
 
 const MessageForm = ({ currentChat }: MessageFormProps) => {
   const [content, setContent] = useState("");
@@ -17,8 +25,8 @@ const MessageForm = ({ currentChat }: MessageFormProps) => {
   const handleClick = () => {
     const data = {
       to: currentChat,
-      content
-    }
+      content,
+    };
     axiosService
       .post(`/message/${currentChat}`, data)
       .then((res) => {
@@ -28,17 +36,17 @@ const MessageForm = ({ currentChat }: MessageFormProps) => {
       .catch((e) => {
         console.log(e);
       });
-  }
+  };
   return (
     <Box
       sx={{
         width: 500,
-        maxWidth: '100%',
+        maxWidth: "100%",
       }}
     >
-      <OutlinedInput 
-        fullWidth 
-        sx={{ borderRadius: "30px"}} 
+      <OutlinedInput
+        fullWidth
+        sx={{ borderRadius: "30px" }}
         placeholder="Message"
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -48,10 +56,10 @@ const MessageForm = ({ currentChat }: MessageFormProps) => {
               <SendIcon />
             </IconButton>
           </InputAdornment>
-          }
-        />
+        }
+      />
     </Box>
   );
-}
+};
 
 export default MessageForm;

@@ -1,14 +1,10 @@
-import { Box, Container, Divider, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import MessageForm from "./MessageForm";
-import { axiosService, fetcher } from "../../helper/axios";
-import useSWR from "swr";
-import { User, UserContext } from "../../contexts/userContext";
-
-type MessageViewProps = {
-  currentChat?: string;
-  chatWith?: User;
-}
+import MessageHeader from "./MessageHeader";
+import { axiosService } from "../../helper/axios";
+import { UserContext } from "../../contexts/userContext";
+import { ChatContext } from "../../contexts/chatContext";
 
 interface Message {
   _id: string;
@@ -17,52 +13,52 @@ interface Message {
   to: string;
 }
 
-const MessageView = ({ currentChat, chatWith }: MessageViewProps) => {
+const MessageView = () => {
   const [messages, setMessages] = useState<Message[]>();
   const { user } = useContext(UserContext);
+  const { chat } = useContext(ChatContext);
 
   useEffect(() => {
-    if (currentChat) {
+    if (chat) {
       axiosService
-        .get(`/message/${currentChat}`)
+        .get(`/message/${chat?._id}`)
         .then((res) => {
-          console.log(res.data);
           setMessages(res.data.messages);
         })
         .catch((e) => {
           console.log(e);
-        })
+        });
     }
-  }, [currentChat])
+  }, [chat]);
 
   return (
-    <Box width={600} sx={{
-      height: "100%",
-    }}>
-      <Box width={"100%"} sx={{
-        background: "lightblue"
-      }}>
-          <Typography>{chatWith?.username}</Typography>
-          <Divider />
-      </Box>
-      <Box width={"100%"} 
-        sx={{ 
+    <Box
+      width={600}
+      sx={{
+        height: "100%",
+      }}
+    >
+      <MessageHeader />
+      <Box
+        width={"100%"}
+        sx={{
           height: "300px",
-          border: "1px solid black"
-        }}>
-        {messages?.map(message => (
-          <Box sx={{
-            background: message.from === user._id ? "gray" : "white"
-          }}>
+          border: "1px solid black",
+        }}
+      >
+        {messages?.map((message) => (
+          <Box
+            sx={{
+              background: message.from === user._id ? "gray" : "white",
+            }}
+          >
             <Typography>{message.content}</Typography>
           </Box>
         ))}
       </Box>
-      {currentChat && (
-        <MessageForm currentChat={currentChat}/>
-      )}
+      {chat && <MessageForm currentChat={chat._id} />}
     </Box>
   );
-}
+};
 
 export default MessageView;

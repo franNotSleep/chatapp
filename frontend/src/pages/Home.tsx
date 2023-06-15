@@ -1,7 +1,7 @@
-import { Box, Container, Stack } from "@mui/material";
+import { Container } from "@mui/material";
 import MessageView from "../components/messages/MessageView";
 import UsersList from "../components/user/UsersList";
-import { useState } from "react";
+import ChatProvider from "../contexts/chatContext";
 
 export type User = {
   username: string;
@@ -15,13 +15,13 @@ export type ChatState = {
 }
 
 function Home() {
-  const [chat, setChat] = useState<ChatState>();
-  console.log(chat);
   return (
-    <Container>
-        <UsersList setChat={setChat}/>
-        <MessageView currentChat={chat?.chatId} chatWith={chat?.chatWith}/>
-    </Container>
+    <ChatProvider>
+      <Container>
+          <UsersList />
+          <MessageView />
+      </Container>
+    </ChatProvider>
   );
 }
 

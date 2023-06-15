@@ -29,7 +29,7 @@ const initialState = {
 
 export const UserContext = createContext(initialState);
 
-type UserProviderProps = {
+export type UserProviderProps = {
   children: ReactNode;
 };
 
@@ -44,8 +44,8 @@ function UserProvider({ children }: UserProviderProps) {
     let userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       setUser(JSON.parse(userInfo) as User);
-    } 
-  }, [])
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
