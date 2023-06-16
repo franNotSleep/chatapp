@@ -27,22 +27,14 @@ export default function Navbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant="h6"
             component="div"
-            onClick={() => navigate("/")}
-            sx={{ flexGrow: 1, cursor: "pointer" }}
+            sx={{ flexGrow: 1 }}
           >
-            ChatApp
+           <Button color="inherit" onClick={() => navigate("/")}>
+             Home
+          </Button>           
           </Typography>
           <Button color="inherit" onClick={handleToProfile}>
             Profile
