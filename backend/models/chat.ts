@@ -2,7 +2,7 @@ import { Schema, Types, model } from "mongoose";
 
 import { IUser } from "./user.js";
 
-interface IChat {
+export interface IChat {
   _id: Types.ObjectId;
   users: IUser[];
 }

@@ -36,3 +36,24 @@ export const getChatOneToOne = asyncHandler(
     return res.status(200).json(chat[0]);
   }
 );
+
+// @desc Get All Chat
+// @route GET /api/chat/
+// @access Private 
+export const getAllChat = asyncHandler(
+  async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const currentUserId = new Types.ObjectId(req.user?._id);
+
+    let chats = await Chat.find({
+      users: {
+         $elemMatch: { $eq: currentUserId } ,
+      }
+    });
+
+    return res.status(200).json(chats);
+  }
+)

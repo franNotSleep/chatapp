@@ -5,8 +5,9 @@ import MessageHeader from "./MessageHeader";
 import { axiosService } from "../../helper/axios";
 import { UserContext } from "../../contexts/userContext";
 import { ChatContext } from "../../contexts/chatContext";
+import { socket } from "../../service/socket";
 
-interface Message {
+export interface Message {
   _id: string;
   content: string;
   from: string;
@@ -14,9 +15,24 @@ interface Message {
 }
 
 const MessageView = () => {
-  const [messages, setMessages] = useState<Message[]>();
+  const [messages, setMessages] = useState<Message[]>([]);
   const { user } = useContext(UserContext);
   const { chat } = useContext(ChatContext);
+  let chatId = "";
+
+  useEffect(() => {
+    socket.on("message-response", (newMessage: Message) => {
+      if (chat?._id === newMessage.to) {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      } else {
+        // notification
+      }
+    });
+
+    return () => {
+      socket.off("message-response"); // Clean up the event listener on unmount
+    };
+  }, [chat]);
 
   useEffect(() => {
     if (chat) {
@@ -29,6 +45,7 @@ const MessageView = () => {
           console.log(e);
         });
     }
+    chatId = chat?._id;
   }, [chat]);
 
   return (
@@ -46,17 +63,18 @@ const MessageView = () => {
           border: "1px solid black",
         }}
       >
-        {messages?.map((message) => (
+        {messages.map((message) => (
           <Box
             sx={{
               background: message.from === user._id ? "gray" : "white",
             }}
+            key={message._id}
           >
             <Typography>{message.content}</Typography>
           </Box>
         ))}
       </Box>
-      {chat && <MessageForm currentChat={chat._id} />}
+      {chat && <MessageForm  messages={messages} setMessages={setMessages} currentChat={chat._id} />}
     </Box>
   );
 };

@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 import userRoute from "./routes/users.js";
 import errorHandler, { invalidPathHandler } from "./middleware/errorHandler.js";
@@ -11,12 +13,34 @@ import ExpressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import messageRouter from "./routes/messages.js";
 import chatRouter from "./routes/chats.js";
+import Message, { IMessage } from "./models/message.js";
 
 dotenv.config();
 
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173"
+  }
+});
 const port = process.env.PORT || 8000;
+
+io.on("connection", (socket) => {
+  socket.on("join-chat", (chatId: string) => {
+    socket.join(chatId);
+  })
+
+  socket.on("message", (message: IMessage) => {
+    let to = message.to.toString()
+    socket.to(to).emit("message-response", message);
+  })
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected.")
+  })
+})
 
 // Enable CORS
 app.use(
@@ -40,7 +64,9 @@ if (process.env.NODE_ENV == "development") {
 }
 
 // Connect DB
-connectDB();
+connectDB().then(() => {
+  Message.deleteMany().exec();
+});
 
 
 app.use(express.json());
@@ -55,4 +81,4 @@ app.use("/api/chat/", chatRouter);
 app.use(errorHandler);
 app.use(invalidPathHandler);
 
-app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
+server.listen(port, () => console.log(`Listening on http://localhost:${port}`));

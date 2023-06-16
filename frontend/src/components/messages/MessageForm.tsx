@@ -1,26 +1,27 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "../../contexts/userContext";
+import { Dispatch, useState, SetStateAction, useContext } from "react";
 
 import {
   Box,
-  FilledInput,
   IconButton,
   InputAdornment,
-  InputLabel,
   OutlinedInput,
-  TextField,
 } from "@mui/material";
 
 import SendIcon from "@mui/icons-material/Send";
 import { axiosService } from "../../helper/axios";
+import { Message } from "./MessageView";
+import { ChatContext } from "../../contexts/chatContext";
+import { socket } from "../../service/socket";
 
 type MessageFormProps = {
   currentChat: string;
+  messages: Message[];
+  setMessages: Dispatch<SetStateAction<Message[]>>;
 };
 
-const MessageForm = ({ currentChat }: MessageFormProps) => {
+const MessageForm = ({ currentChat, setMessages, messages }: MessageFormProps) => {
   const [content, setContent] = useState("");
-  const { user } = useContext(UserContext);
+  const { chat } = useContext(ChatContext);
 
   const handleClick = () => {
     const data = {
@@ -29,9 +30,13 @@ const MessageForm = ({ currentChat }: MessageFormProps) => {
     };
     axiosService
       .post(`/message/${currentChat}`, data)
-      .then((res) => {
+      .then(({ data }: { data: {message: Message} }) => {
+        // Show message
         setContent("");
-        console.log(res.data);
+        setMessages([...messages, data.message])
+
+        // Emit message
+        socket.emit("message", data.message);
       })
       .catch((e) => {
         console.log(e);
