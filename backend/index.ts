@@ -17,30 +17,29 @@ import Message, { IMessage } from "./models/message.js";
 
 dotenv.config();
 
-
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173"
-  }
+    origin: "http://localhost:5173",
+  },
 });
 const port = process.env.PORT || 8000;
 
 io.on("connection", (socket) => {
   socket.on("join-chat", (chatId: string) => {
     socket.join(chatId);
-  })
+  });
 
   socket.on("message", (message: IMessage) => {
-    let to = message.to.toString()
+    let to = message.to.toString();
     socket.to(to).emit("message-response", message);
-  })
+  });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected.")
-  })
-})
+    console.log("User disconnected.");
+  });
+});
 
 // Enable CORS
 app.use(
@@ -57,17 +56,18 @@ app.use(ExpressMongoSanitize());
 app.use(helmet());
 
 if (process.env.NODE_ENV == "development") {
-    app.use((req: Request, _res: Response, next: NextFunction) => {
-        console.log(`${req.method} ${req.protocol}://${req.hostname}:${port}${req.url}`);
-        next();
-    });
+  app.use((req: Request, _res: Response, next: NextFunction) => {
+    console.log(
+      `${req.method} ${req.protocol}://${req.hostname}:${port}${req.url}`
+    );
+    next();
+  });
 }
 
 // Connect DB
 connectDB().then(() => {
   Message.deleteMany().exec();
 });
-
 
 app.use(express.json());
 app.use(cookieParser());

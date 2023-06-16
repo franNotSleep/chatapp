@@ -1,11 +1,6 @@
 import { Dispatch, useState, SetStateAction, useContext } from "react";
 
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-} from "@mui/material";
+import { Box, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 
 import SendIcon from "@mui/icons-material/Send";
 import { axiosService } from "../../helper/axios";
@@ -19,9 +14,12 @@ type MessageFormProps = {
   setMessages: Dispatch<SetStateAction<Message[]>>;
 };
 
-const MessageForm = ({ currentChat, setMessages, messages }: MessageFormProps) => {
+const MessageForm = ({
+  currentChat,
+  setMessages,
+  messages,
+}: MessageFormProps) => {
   const [content, setContent] = useState("");
-  const { chat } = useContext(ChatContext);
 
   const handleClick = () => {
     const data = {
@@ -30,10 +28,10 @@ const MessageForm = ({ currentChat, setMessages, messages }: MessageFormProps) =
     };
     axiosService
       .post(`/message/${currentChat}`, data)
-      .then(({ data }: { data: {message: Message} }) => {
+      .then(({ data }: { data: { message: Message } }) => {
         // Show message
         setContent("");
-        setMessages([...messages, data.message])
+        setMessages([...messages, data.message]);
 
         // Emit message
         socket.emit("message", data.message);

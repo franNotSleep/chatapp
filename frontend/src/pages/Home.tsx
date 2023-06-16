@@ -18,11 +18,11 @@ export type User = {
 export type ChatState = {
   chatId: string;
   chatWith: User;
-}
+};
 
 function Home() {
   const chats = useSWR<Chat[]>("/chat/", fetcher, {
-    refreshInterval: 20000
+    refreshInterval: 20000,
   });
 
   useEffect(() => {
@@ -31,13 +31,13 @@ function Home() {
         socket.emit("join-chat", chat._id);
       }
     }
-  }, [chats.data])
+  }, [chats.data]);
 
   return (
     <ChatProvider>
       <Container>
-          <UsersList />
-          <MessageView />
+        <UsersList />
+        <MessageView />
       </Container>
     </ChatProvider>
   );

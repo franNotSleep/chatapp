@@ -18,7 +18,7 @@ const MessageView = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const { user } = useContext(UserContext);
   const { chat } = useContext(ChatContext);
-  let chatId = "";
+  let chatId;
 
   useEffect(() => {
     socket.on("message-response", (newMessage: Message) => {
@@ -74,7 +74,13 @@ const MessageView = () => {
           </Box>
         ))}
       </Box>
-      {chat && <MessageForm  messages={messages} setMessages={setMessages} currentChat={chat._id} />}
+      {chat && (
+        <MessageForm
+          messages={messages}
+          setMessages={setMessages}
+          currentChat={chat._id}
+        />
+      )}
     </Box>
   );
 };
