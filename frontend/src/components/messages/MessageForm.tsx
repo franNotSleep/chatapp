@@ -9,25 +9,21 @@ import { ChatContext } from "../../contexts/chatContext";
 import { socket } from "../../service/socket";
 
 type MessageFormProps = {
-  currentChat: string;
   messages: Message[];
   setMessages: Dispatch<SetStateAction<Message[]>>;
 };
 
-const MessageForm = ({
-  currentChat,
-  setMessages,
-  messages,
-}: MessageFormProps) => {
+const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
+  const { chat } = useContext(ChatContext);
   const [content, setContent] = useState("");
 
   const handleClick = () => {
     const data = {
-      to: currentChat,
+      to: chat?._id,
       content,
     };
     axiosService
-      .post(`/message/${currentChat}`, data)
+      .post(`/message/${chat?._id}`, data)
       .then(({ data }: { data: { message: Message } }) => {
         // Show message
         setContent("");
@@ -41,27 +37,20 @@ const MessageForm = ({
       });
   };
   return (
-    <Box
-      sx={{
-        width: 500,
-        maxWidth: "100%",
-      }}
-    >
-      <OutlinedInput
-        fullWidth
-        sx={{ borderRadius: "30px" }}
-        placeholder="Message"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton onClick={handleClick}>
-              <SendIcon />
-            </IconButton>
-          </InputAdornment>
-        }
-      />
-    </Box>
+    <OutlinedInput
+      fullWidth
+      sx={{ borderRadius: "30px" }}
+      placeholder="Message"
+      value={content}
+      onChange={(e) => setContent(e.target.value)}
+      endAdornment={
+        <InputAdornment position="end">
+          <IconButton onClick={handleClick}>
+            <SendIcon />
+          </IconButton>
+        </InputAdornment>
+      }
+    />
   );
 };
 

@@ -1,11 +1,14 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import MessageForm from "./MessageForm";
 import MessageHeader from "./MessageHeader";
+import NoChatView from "./NoChatView";
 import { axiosService } from "../../helper/axios";
-import { UserContext } from "../../contexts/userContext";
 import { ChatContext } from "../../contexts/chatContext";
 import { socket } from "../../service/socket";
+import MessageItem from "./MessageItem";
+import MessageFooter from "./MessageFooter";
+
+import React from "react";
 
 export interface Message {
   _id: string;
@@ -16,7 +19,6 @@ export interface Message {
 
 const MessageView = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const { user } = useContext(UserContext);
   const { chat } = useContext(ChatContext);
   let chatId;
 
@@ -50,36 +52,30 @@ const MessageView = () => {
 
   return (
     <Box
-      width={600}
       sx={{
         height: "100%",
       }}
     >
-      <MessageHeader />
-      <Box
-        width={"100%"}
-        sx={{
-          height: "300px",
-          border: "1px solid black",
-        }}
-      >
-        {messages.map((message) => (
+      {chat ? (
+        <React.Fragment>
+          <MessageHeader setMessages={setMessages} />
           <Box
             sx={{
-              background: message.from === user._id ? "gray" : "white",
+              height: "300px",
+              padding: "5px",
+              display: "flex",
+              flexDirection: "column",
+              background: "#E1ECC8",
             }}
-            key={message._id}
           >
-            <Typography>{message.content}</Typography>
+            {messages.map((message) => (
+              <MessageItem message={message} key={message._id} />
+            ))}
           </Box>
-        ))}
-      </Box>
-      {chat && (
-        <MessageForm
-          messages={messages}
-          setMessages={setMessages}
-          currentChat={chat._id}
-        />
+          <MessageFooter messages={messages} setMessages={setMessages} />
+        </React.Fragment>
+      ) : (
+        <NoChatView />
       )}
     </Box>
   );

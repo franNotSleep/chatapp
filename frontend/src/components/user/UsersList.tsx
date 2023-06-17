@@ -15,14 +15,12 @@ const UsersList = () => {
   if (isLoading) return "Loading...";
 
   return (
-    <Box width={"300px"}>
+    <Box height={"100%"}>
       <List
         sx={{
-          width: "100%",
-          height: "97%",
-          maxWidth: 360,
           bgcolor: "background.paper",
-          border: "1px solid lightblue",
+          border: "1px solid red",
+          height: "430px",
         }}
       >
         {data?.users.map((user) => (

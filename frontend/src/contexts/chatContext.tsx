@@ -29,6 +29,7 @@ const initialState = {
     _id: "",
     username: "",
     email: "",
+    imageURL: ""
   },
 } as ChatContextInterface;
 
@@ -39,6 +40,7 @@ function ChatProvider({ children }: UserProviderProps) {
     _id: "",
     email: "",
     username: "",
+    imageURL: ""
   });
 
   const [chat, setChat] = useState<Chat>();

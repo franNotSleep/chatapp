@@ -31,7 +31,14 @@ const UserItem = ({ user }: UserItemProps) => {
           borderRadius: "100%"
 
         }}>
-          <Badge color="error" overlap="circular" badgeContent=" ">
+          <Badge 
+            color="success"
+            overlap="circular"
+            anchorOrigin={{ 
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            badgeContent=" ">
             <Avatar 
               sx={{ width: 56, height: 56 }}
               src={user.imageURL}/>
