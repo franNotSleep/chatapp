@@ -5,9 +5,10 @@ import ChatProvider, { Chat } from "../contexts/chatContext";
 import useSWR from "swr";
 
 import { fetcher } from "../helper/axios";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { socket } from "../service/socket";
+import { UserContext } from "../contexts/userContext";
 
 export type User = {
   username: string;
@@ -24,14 +25,22 @@ function Home() {
   const chats = useSWR<Chat[]>("/chat/", fetcher, {
     refreshInterval: 20000,
   });
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
+    socket.open();
+    console.log(socket.connected);
     if (chats.data) {
       for (let chat of chats.data) {
         socket.emit("join-chat", chat._id);
       }
     }
-  }, [chats.data]);
+
+    if (user._id) {
+      socket.emit("setup", user);
+    }
+
+  }, [chats.data, user]);
 
   return (
     <ChatProvider>

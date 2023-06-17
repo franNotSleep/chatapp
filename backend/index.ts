@@ -14,6 +14,7 @@ import helmet from "helmet";
 import messageRouter from "./routes/messages.js";
 import chatRouter from "./routes/chats.js";
 import Message, { IMessage } from "./models/message.js";
+import { IUser } from "./models/user.js";
 
 dotenv.config();
 
@@ -26,9 +27,24 @@ const io = new Server(server, {
 });
 const port = process.env.PORT || 8000;
 
+interface OnlineUsers {
+  [socketId: string]: string;
+};
+
+const onlineUsers: OnlineUsers = {};
+
 io.on("connection", (socket) => {
   socket.on("join-chat", (chatId: string) => {
     socket.join(chatId);
+  });
+
+  socket.on("setup", (user: IUser) => {
+    console.log("Welcome " + user._id);
+    onlineUsers[socket.id] = user._id.toString();
+
+    console.log(onlineUsers);
+    socket.emit("online-users", Object.values(onlineUsers));
+    socket.broadcast.emit("online-users", Object.values(onlineUsers));
   });
 
   socket.on("message", (message: IMessage) => {
@@ -36,8 +52,17 @@ io.on("connection", (socket) => {
     socket.to(to).emit("message-response", message);
   });
 
+  socket.on("offline", () => {
+    console.log("Bye "+ socket.id);
+    delete onlineUsers[socket.id];
+    socket.broadcast.emit("online-users", Object.values(onlineUsers));
+    socket.disconnect(true);
+  });
+
   socket.on("disconnect", () => {
-    console.log("User disconnected.");
+    console.log("Bye "+ socket.id);
+    delete onlineUsers[socket.id];
+    socket.broadcast.emit("online-users", Object.values(onlineUsers));
   });
 });
 

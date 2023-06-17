@@ -3,6 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { axiosService } from "../helper/axios";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../service/socket";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function Navbar() {
       .then((_) => {
         navigate("/login/");
         localStorage.removeItem("userInfo");
+        socket.emit("offline");
       })
       .catch((e) => {
         console.log(e);
