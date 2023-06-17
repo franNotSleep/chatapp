@@ -35,7 +35,7 @@ function Home() {
 
   return (
     <ChatProvider>
-      <Container>
+      <Container maxWidth="md">
         <UsersList />
         <MessageView />
       </Container>

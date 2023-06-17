@@ -9,6 +9,7 @@ export interface IUser {
   password: string;
   created: Date;
   matchPassword: (password: string) => Promise<boolean>;
+  imageURL: string;
 }
 
 const userScheme = new Schema<IUser>(
@@ -33,11 +34,21 @@ const userScheme = new Schema<IUser>(
       minlength: 6,
       select: false,
     },
+    imageURL: {
+      type: String,
+    }
   },
   {
     timestamps: true,
   }
 );
+
+userScheme.pre("save", function(next) {
+  if (!this.imageURL) {
+    this.imageURL = `https://api.dicebear.com/6.x/adventurer/svg?seed=${this.username}`; 
+  }
+  next();
+})
 
 userScheme.pre("save", function(next) {
   if (!this.isModified("password")) {

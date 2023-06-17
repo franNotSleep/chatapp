@@ -11,6 +11,7 @@ export type User = {
   _id: string;
   username: string;
   email: string;
+  imageURL: string;
 };
 
 export interface UserContextInterface {
@@ -23,6 +24,7 @@ const initialState = {
     _id: "",
     email: "",
     username: "",
+    imageURL: "",
   },
   setUser: (_user: User) => {},
 } as UserContextInterface;
@@ -38,6 +40,7 @@ function UserProvider({ children }: UserProviderProps) {
     _id: "",
     email: "",
     username: "",
+    imageURL: ""
   });
 
   useEffect(() => {

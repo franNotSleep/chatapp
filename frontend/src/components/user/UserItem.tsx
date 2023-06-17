@@ -1,5 +1,5 @@
 import { User } from "../../contexts/userContext";
-import { ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
+import { ListItem, ListItemAvatar, Avatar, ListItemText, Badge, Divider, Stack } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import { useContext } from "react";
 import { axiosService } from "../../helper/axios";
@@ -24,13 +24,22 @@ const UserItem = ({ user }: UserItemProps) => {
       });
   };
   return (
-    <ListItem sx={{ cursor: "pointer" }} onClick={handleClick}>
-      <ListItemAvatar>
-        <Avatar>
-          <ImageIcon />
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText primary={user.username} secondary={user.email} />
+    <ListItem sx={{ cursor: "pointer", background: "#CBD4C2", mb: 2, borderRadius: "20px" }} onClick={handleClick}>
+      <Stack direction={"row"} spacing={1}>
+        <ListItemAvatar sx={{
+          background: "#C9F9FF",
+          borderRadius: "100%"
+
+        }}>
+          <Badge color="error" overlap="circular" badgeContent=" ">
+            <Avatar 
+              sx={{ width: 56, height: 56 }}
+              src={user.imageURL}/>
+          </Badge>
+        </ListItemAvatar>
+        <Divider orientation="vertical"/>
+        <ListItemText primary={user.username} secondary={user.email} />
+      </Stack>
     </ListItem>
   );
 };
