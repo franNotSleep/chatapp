@@ -27,9 +27,15 @@ function Home() {
   });
   const { user } = useContext(UserContext);
 
+
   useEffect(() => {
-    socket.open();
-    console.log(socket.connected);
+    if (socket.disconnected) {
+      socket.open()
+      console.log(socket.connected);
+    }
+  }, [socket.connected])
+
+  useEffect(() => {
     if (chats.data) {
       for (let chat of chats.data) {
         socket.emit("join-chat", chat._id);

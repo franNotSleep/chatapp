@@ -34,16 +34,18 @@ interface OnlineUsers {
 const onlineUsers: OnlineUsers = {};
 
 io.on("connection", (socket) => {
+
   socket.on("join-chat", (chatId: string) => {
     socket.join(chatId);
   });
+
+  socket.emit("online-users", Object.values(onlineUsers));
 
   socket.on("setup", (user: IUser) => {
     console.log("Welcome " + user._id);
     onlineUsers[socket.id] = user._id.toString();
 
     console.log(onlineUsers);
-    socket.emit("online-users", Object.values(onlineUsers));
     socket.broadcast.emit("online-users", Object.values(onlineUsers));
   });
 

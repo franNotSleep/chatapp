@@ -1,6 +1,5 @@
 import { User } from "../../contexts/userContext";
 import { ListItem, ListItemAvatar, Avatar, ListItemText, Badge, Divider, Stack } from "@mui/material";
-import ImageIcon from "@mui/icons-material/Image";
 import { useContext, useEffect, useState } from "react";
 import { axiosService } from "../../helper/axios";
 import { ChatContext, Chat } from "../../contexts/chatContext";
@@ -8,11 +7,11 @@ import { socket } from "../../service/socket";
 
 type UserItemProps = {
   user: User;
+  online: boolean;
 };
 
-const UserItem = ({ user }: UserItemProps) => {
+const UserItem = ({ user, online }: UserItemProps) => {
   const { setChat, setCurrentContact } = useContext(ChatContext);
-  const [onlineUsers, setOnlineUsers] = useState<Array<string>>([]);
 
   const handleClick = () => {
     // get chat
@@ -27,16 +26,7 @@ const UserItem = ({ user }: UserItemProps) => {
       });
   };
 
-  useEffect(() => {
-    console.log("something");
-    socket.on("online-users", (users: Array<string>) => {
-      console.log(users);
-      setOnlineUsers(users);
-    })
-    return () => {
-      socket.off("online-users");
-    }
-  }, [])
+  console.log(`Is online: ${online}\nId: ${user._id}`);
 
   return (
     <ListItem sx={{ cursor: "pointer", background: "#CBD4C2", mb: 2, borderRadius: "20px" }} onClick={handleClick}>
@@ -46,7 +36,7 @@ const UserItem = ({ user }: UserItemProps) => {
           borderRadius: "100%"
         }}>
           <Badge 
-            color={onlineUsers.indexOf(user._id) !== -1 ? "success" : "error"}
+            color={online ? "success" : "error"}
             overlap="circular"
             anchorOrigin={{ 
               vertical: 'bottom',
