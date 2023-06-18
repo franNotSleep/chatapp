@@ -27,13 +27,12 @@ function Home() {
   });
   const { user } = useContext(UserContext);
 
-
   useEffect(() => {
     if (socket.disconnected) {
-      socket.open()
+      socket.open();
       console.log(socket.connected);
     }
-  }, [socket.connected])
+  }, [socket.connected]);
 
   useEffect(() => {
     if (chats.data) {
@@ -45,7 +44,6 @@ function Home() {
     if (user._id) {
       socket.emit("setup", user);
     }
-
   }, [chats.data, user]);
 
   return (

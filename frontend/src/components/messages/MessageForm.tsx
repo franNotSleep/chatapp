@@ -1,6 +1,6 @@
 import { Dispatch, useState, SetStateAction, useContext } from "react";
 
-import { Box, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 
 import SendIcon from "@mui/icons-material/Send";
 import { axiosService } from "../../helper/axios";
@@ -29,7 +29,7 @@ const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
     timeout = setTimeout(() => {
       socket.emit("stop", chat?._id);
     }, 3000);
-  }
+  };
 
   const handleClick = () => {
     const data = {

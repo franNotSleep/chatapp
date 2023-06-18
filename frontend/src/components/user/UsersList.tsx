@@ -19,10 +19,10 @@ const UsersList = () => {
   useEffect(() => {
     socket.on("online-users", (users: Array<string>) => {
       setOnlineUsers(users);
-    })
+    });
     return () => {
       socket.off("online-users");
-    }
+    };
   }, []);
 
   if (error) return "An error has ocurred.";
@@ -38,10 +38,11 @@ const UsersList = () => {
         }}
       >
         {data?.users.map((user) => (
-          <UserItem 
+          <UserItem
             user={user}
             online={isOnline(onlineUsers, user._id)}
-            key={user._id} />
+            key={user._id}
+          />
         ))}
       </List>
     </Box>

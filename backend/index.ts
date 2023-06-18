@@ -29,12 +29,11 @@ const port = process.env.PORT || 8000;
 
 interface OnlineUsers {
   [socketId: string]: string;
-};
+}
 
 const onlineUsers: OnlineUsers = {};
 
 io.on("connection", (socket) => {
-
   socket.on("join-chat", (chatId: string) => {
     socket.join(chatId);
   });
@@ -56,7 +55,7 @@ io.on("connection", (socket) => {
   socket.on("stop", (chatId: string) => {
     console.log("stop...");
     socket.to(chatId).emit("stop-typing", chatId);
-  })
+  });
 
   socket.on("message", (message: IMessage) => {
     let to = message.to.toString();
@@ -64,14 +63,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("offline", () => {
-    console.log("Bye "+ socket.id);
+    console.log("Bye " + socket.id);
     delete onlineUsers[socket.id];
     socket.broadcast.emit("online-users", Object.values(onlineUsers));
     socket.disconnect(true);
   });
 
   socket.on("disconnect", () => {
-    console.log("Bye "+ socket.id);
+    console.log("Bye " + socket.id);
     delete onlineUsers[socket.id];
     socket.broadcast.emit("online-users", Object.values(onlineUsers));
   });

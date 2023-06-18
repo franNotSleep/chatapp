@@ -39,14 +39,14 @@ const MessageView = () => {
     });
 
     socket.on("stop-typing", (msg: string) => {
-        console.log(msg);
-        setIsTyping(false);
+      console.log(msg);
+      setIsTyping(false);
     });
 
     return () => {
-      socket.off("message-response"); 
-      socket.off("user-typing"); 
-      socket.off("stop-typing"); 
+      socket.off("message-response");
+      socket.off("user-typing");
+      socket.off("stop-typing");
     };
   }, [chat]);
 
@@ -86,16 +86,16 @@ const MessageView = () => {
               <MessageItem message={message} key={message._id} />
             ))}
           </Box>
-          {isTyping && (<Box
-          sx={{
-              width: "50px",
-              height: "50px",
-            }}>
-            <Lottie 
-              animationData={typingAnimation} 
-              loop={true}
-            />
-          </Box>)}
+          {isTyping && (
+            <Box
+              sx={{
+                width: "50px",
+                height: "50px",
+              }}
+            >
+              <Lottie animationData={typingAnimation} loop={true} />
+            </Box>
+          )}
           <MessageFooter messages={messages} setMessages={setMessages} />
         </React.Fragment>
       ) : (
