@@ -13,9 +13,23 @@ type MessageFormProps = {
   setMessages: Dispatch<SetStateAction<Message[]>>;
 };
 
+let timeout: NodeJS.Timeout | undefined = undefined;
+
 const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
   const { chat } = useContext(ChatContext);
   const [content, setContent] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+
+    socket.emit("typing", chat?._id);
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      socket.emit("stop", chat?._id);
+    }, 3000);
+  }
 
   const handleClick = () => {
     const data = {
@@ -42,7 +56,7 @@ const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
       sx={{ borderRadius: "30px" }}
       placeholder="Message"
       value={content}
-      onChange={(e) => setContent(e.target.value)}
+      onChange={handleChange}
       endAdornment={
         <InputAdornment position="end">
           <IconButton onClick={handleClick}>

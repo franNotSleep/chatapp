@@ -45,9 +45,18 @@ io.on("connection", (socket) => {
     console.log("Welcome " + user._id);
     onlineUsers[socket.id] = user._id.toString();
 
-    console.log(onlineUsers);
     socket.broadcast.emit("online-users", Object.values(onlineUsers));
   });
+
+  socket.on("typing", (chatId: string) => {
+    console.log("typing...");
+    socket.to(chatId).emit("user-typing", chatId);
+  });
+
+  socket.on("stop", (chatId: string) => {
+    console.log("stop...");
+    socket.to(chatId).emit("stop-typing", chatId);
+  })
 
   socket.on("message", (message: IMessage) => {
     let to = message.to.toString();
