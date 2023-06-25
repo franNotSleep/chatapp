@@ -5,7 +5,7 @@ import NoChatView from "./NoChatView";
 import { axiosService } from "../../helper/axios";
 import { ChatContext } from "../../contexts/chatContext";
 import { socket } from "../../service/socket";
-import MessageItem from "./MessageItem";
+import Messages from "./Messages";
 import MessageFooter from "./MessageFooter";
 
 import React, { useState } from "react";
@@ -17,6 +17,8 @@ export interface Message {
   content: string;
   from: string;
   to: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const MessageView = () => {
@@ -70,14 +72,14 @@ const MessageView = () => {
     <Box
       sx={{
         height: "100%",
+        display: "flex",
+        flexFlow: "column",
       }}
     >
       {chat ? (
         <React.Fragment>
           <MessageHeader setMessages={setMessages} />
-            {messages.map((message) => (
-              <MessageItem message={message} key={message._id} />
-            ))}
+          <Messages messages={messages}/>
           {isTyping && (
             <Box
               sx={{

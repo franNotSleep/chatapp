@@ -30,6 +30,7 @@ const MessageHeader = ({ setMessages }: MessageHeaderProps) => {
       sx={{
         background: "lightblue",
         borderRadius: "10px",
+        flex: "0 1 auto",
       }}
     >
       <Stack direction={"row"} sx={{ padding: 1 }}>

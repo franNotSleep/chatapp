@@ -1,7 +1,8 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, ListItem, ListItemText } from "@mui/material";
 import { Message } from "./MessageView";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/userContext";
+import { format } from "timeago.js";
 
 type MessageItemProps = {
   message: Message;
@@ -10,25 +11,24 @@ type MessageItemProps = {
 const MessageItem = ({ message }: MessageItemProps) => {
   const { user } = useContext(UserContext);
   const fromSelf = message.from === user._id;
+
   return (
-    <Box
+    <ListItem
       sx={{
         width: "max-content",
-        borderRadius: "20px",
         alignSelf: fromSelf ? "flex-end" : "flex-start",
       }}
     >
-      <Typography
-        padding={1}
-        color={"#FFF"}
+      <ListItemText 
+        primary={message.content}
+        secondary={format(message.createdAt)}
         sx={{
           background: fromSelf ? "#A675A1" : "#CEA2AC",
-          borderRadius: "20px",
+          borderRadius: "10px",
+          padding: 1,
         }}
-      >
-        {message.content}
-      </Typography>
-    </Box>
+      />
+    </ListItem>
   );
 };
 

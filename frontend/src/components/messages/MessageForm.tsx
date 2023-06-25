@@ -7,6 +7,7 @@ import { axiosService } from "../../helper/axios";
 import { Message } from "./MessageView";
 import { ChatContext } from "../../contexts/chatContext";
 import { socket } from "../../service/socket";
+import { Form } from "react-router-dom";
 
 type MessageFormProps = {
   messages: Message[];
@@ -31,7 +32,7 @@ const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
     }, 3000);
   };
 
-  const handleClick = () => {
+  const handleSubmit = () => {
     const data = {
       to: chat?._id,
       content,
@@ -51,21 +52,23 @@ const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
       });
   };
   return (
-    <OutlinedInput
-      fullWidth
-      sx={{ borderRadius: "30px" }}
-      placeholder="Message"
-      value={content}
-      onChange={handleChange}
-      endAdornment={
-        <InputAdornment position="end">
-          <IconButton onClick={handleClick}>
-            <SendIcon />
-          </IconButton>
-        </InputAdornment>
-      }
-    />
-  );
+    <Form onSubmit={handleSubmit}>
+      <OutlinedInput
+        fullWidth
+        sx={{ borderRadius: "30px" }}
+        placeholder="Message"
+        value={content}
+        onChange={handleChange}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton type="submit">
+              <SendIcon />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+    </Form>
+      );
 };
 
 export default MessageForm;
