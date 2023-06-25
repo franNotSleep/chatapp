@@ -17,12 +17,7 @@ export interface ChatContextInterface {
 }
 
 const initialState = {
-  chat: {
-    _id: "",
-    users: [],
-    createdAt: "",
-    updatedAt: "",
-  },
+  chat: undefined,
   setChat: (_chat: Chat) => {},
   setCurrentContact: (_user: User) => {},
   currentContact: {

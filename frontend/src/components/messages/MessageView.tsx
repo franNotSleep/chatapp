@@ -64,6 +64,8 @@ const MessageView = () => {
     chatId = chat?._id;
   }, [chat]);
 
+  console.log(chat);
+
   return (
     <Box
       sx={{
@@ -73,19 +75,9 @@ const MessageView = () => {
       {chat ? (
         <React.Fragment>
           <MessageHeader setMessages={setMessages} />
-          <Box
-            sx={{
-              height: "300px",
-              padding: "5px",
-              display: "flex",
-              flexDirection: "column",
-              background: "#E1ECC8",
-            }}
-          >
             {messages.map((message) => (
               <MessageItem message={message} key={message._id} />
             ))}
-          </Box>
           {isTyping && (
             <Box
               sx={{

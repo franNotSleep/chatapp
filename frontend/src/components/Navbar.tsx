@@ -1,18 +1,33 @@
-import { Button, Typography, Toolbar, Box, AppBar } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Menu, MenuItem, Typography, Toolbar, Box, AppBar, CssBaseline, Avatar, IconButton } from "@mui/material";
+import { useContext, useState } from "react";
 import { axiosService } from "../helper/axios";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../service/socket";
+import { UserContext } from "../contexts/userContext";
+
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { user } = useContext(UserContext);
+
+  const open = Boolean(anchorEl);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
 
   const handleLogout = () => {
     axiosService
       .post("/users/logout")
-      .then((_) => {
+      .then(() => {
         navigate("/login/");
+        handleClose();
         localStorage.removeItem("userInfo");
         socket.emit("offline");
       })
@@ -23,30 +38,45 @@ export default function Navbar() {
 
   const handleToProfile = () => {
     navigate("/profile/");
+    handleClose();
   };
 
+  console.log(user);
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+    <Box>
+      <CssBaseline />
+      <AppBar position="static">
         <Toolbar>
           <Typography
             variant="h6"
             component="div"
             sx={{ flexGrow: 1 }}
           >
-           <Button color="inherit" onClick={() => navigate("/")}>
-             Home
-          </Button>           
+            <Avatar 
+              src={user.imageURL}
+              sx={{ width: 54, height: 54, cursor: "pointer" }}
+              onClick={handleToProfile}
+            />
           </Typography>
-          <Button color="inherit" onClick={handleToProfile}>
-            Profile
-          </Button>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+          <IconButton onClick={handleClick}>
+            <MenuIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <Toolbar></Toolbar>
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleToProfile}>Profile</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
     </Box>
   );
 }

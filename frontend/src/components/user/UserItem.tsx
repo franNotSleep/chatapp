@@ -12,6 +12,8 @@ import { useContext } from "react";
 import { axiosService } from "../../helper/axios";
 import { ChatContext, Chat } from "../../contexts/chatContext";
 
+import { useNavigate } from "react-router-dom";
+
 type UserItemProps = {
   user: User;
   online: boolean;
@@ -19,6 +21,7 @@ type UserItemProps = {
 
 const UserItem = ({ user, online }: UserItemProps) => {
   const { setChat, setCurrentContact } = useContext(ChatContext);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     // get chat
@@ -27,13 +30,12 @@ const UserItem = ({ user, online }: UserItemProps) => {
       .then(({ data }: { data: Chat }) => {
         setChat(data);
         setCurrentContact(user);
+        navigate("/");
       })
       .catch((e) => {
         console.log(e);
       });
   };
-
-  console.log(`Is online: ${online}\nId: ${user._id}`);
 
   return (
     <ListItem

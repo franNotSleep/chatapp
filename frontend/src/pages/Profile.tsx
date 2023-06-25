@@ -1,14 +1,17 @@
-import {  Box, Container, Divider, Paper, Stack, Typography } from "@mui/material";
+import {  Tooltip, Container, Divider, IconButton, Paper, Stack, Typography } from "@mui/material";
 
 import UserCard from "../components/user/UserCard.tsx";
 import { useEffect, useState } from "react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [quote, setQuote] = useState({
     author: "",
     text: ""
   });
+  const navigate = useNavigate();
   const options = {
     method: 'GET',
     url: 'https://quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com/quote',
@@ -34,6 +37,11 @@ function Profile() {
 
   return (
     <Container maxWidth="xs">
+      <Tooltip title="Go Back">
+        <IconButton onClick={() => { navigate("/") }}>
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <Typography variant="h3">Profile</Typography>
       <UserCard />
       <Typography variant="h5">Motivational Quotes</Typography>
@@ -44,9 +52,6 @@ function Profile() {
         <Typography textAlign={"center"} variant="body2">"{quote.text}"</Typography>
         <Typography textAlign={"center"} variant="caption">-{quote.author}</Typography>
       </Paper>
-
-
-
     </Container>
   );
 }

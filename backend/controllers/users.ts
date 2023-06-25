@@ -140,6 +140,7 @@ const sendUser = (res: Response, user: IUser) => {
       email: user.email,
       username: user.username,
       _id: user._id,
+      imageURL: user.imageURL
     },
   };
 
