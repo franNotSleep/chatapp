@@ -4,7 +4,7 @@ import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 
 import SendIcon from "@mui/icons-material/Send";
 import { axiosService } from "../../helper/axios";
-import { Message } from "./MessageView";
+import { Message } from "../chat/MessageView";
 import { ChatContext } from "../../contexts/chatContext";
 import { socket } from "../../service/socket";
 import { Form } from "react-router-dom";

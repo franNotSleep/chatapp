@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import { useContext, useEffect } from "react";
-import MessageHeader from "./MessageHeader";
+import ChatHeader from "./ChatHeader";
 import NoChatView from "./NoChatView";
 import { axiosService } from "../../helper/axios";
 import { ChatContext } from "../../contexts/chatContext";
 import { socket } from "../../service/socket";
-import Messages from "./Messages";
-import MessageFooter from "./MessageFooter";
+import Messages from "../messages/Messages";
+import ChatFooter from "./ChatFooter";
 
 import React, { useState } from "react";
 import typingAnimation from "../../assets/typing.json";
@@ -21,7 +21,7 @@ export interface Message {
   updatedAt: Date;
 }
 
-const MessageView = () => {
+const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const { chat } = useContext(ChatContext);
   const [isTyping, setIsTyping] = useState(false);
@@ -66,8 +66,6 @@ const MessageView = () => {
     chatId = chat?._id;
   }, [chat]);
 
-  console.log(chat);
-
   return (
     <Box
       sx={{
@@ -78,7 +76,7 @@ const MessageView = () => {
     >
       {chat ? (
         <React.Fragment>
-          <MessageHeader setMessages={setMessages} />
+          <ChatHeader setMessages={setMessages} />
           <Messages messages={messages}/>
           {isTyping && (
             <Box
@@ -90,7 +88,7 @@ const MessageView = () => {
               <Lottie animationData={typingAnimation} loop={true} />
             </Box>
           )}
-          <MessageFooter messages={messages} setMessages={setMessages} />
+          <ChatFooter messages={messages} setMessages={setMessages} />
         </React.Fragment>
       ) : (
         <NoChatView />
@@ -99,4 +97,4 @@ const MessageView = () => {
   );
 };
 
-export default MessageView;
+export default Chat;

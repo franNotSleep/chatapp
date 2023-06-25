@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction, useContext } from "react";
 import { Box, Typography, Stack, Avatar, Button } from "@mui/material";
 import { ChatContext } from "../../contexts/chatContext";
-import { Message } from "./MessageView";
+import { Message } from "./Chat";
 
 type MessageHeaderProps = {
   setMessages: Dispatch<SetStateAction<Message[]>>;
 };
 
-const MessageHeader = ({ setMessages }: MessageHeaderProps) => {
+const ChatHeader = ({ setMessages }: MessageHeaderProps) => {
   const { currentContact, setCurrentContact, setChat } =
     useContext(ChatContext);
 
@@ -47,4 +47,4 @@ const MessageHeader = ({ setMessages }: MessageHeaderProps) => {
   );
 };
 
-export default MessageHeader;
+export default ChatHeader;

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
-import MessageForm from "./MessageForm";
-import { Message } from "./MessageView";
+import MessageForm from "../messages/MessageForm";
+import { Message } from "./Chat";
 import { Box } from "@mui/material";
 
 type MessageFooterProps = {
@@ -8,7 +8,7 @@ type MessageFooterProps = {
   setMessages: Dispatch<SetStateAction<Message[]>>
 }
 
-const MessageFooter = ({ messages, setMessages }: MessageFooterProps) => {
+const ChatFooter = ({ messages, setMessages }: MessageFooterProps) => {
   return (
     <Box
       sx={{
@@ -25,4 +25,4 @@ const MessageFooter = ({ messages, setMessages }: MessageFooterProps) => {
   ); 
 }
 
-export default MessageFooter;
+export default ChatFooter;

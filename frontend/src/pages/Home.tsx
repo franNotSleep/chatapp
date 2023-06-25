@@ -1,5 +1,5 @@
-import MessageView from "../components/messages/MessageView";
-import ChatProvider, { Chat } from "../contexts/chatContext";
+import Chat from "../components/chat/Chat";
+import ChatProvider, { Chat as IChat } from "../contexts/chatContext";
 import useSWR from "swr";
 
 import { fetcher } from "../helper/axios";
@@ -20,7 +20,7 @@ export type ChatState = {
 };
 
 function Home() {
-  const chats = useSWR<Chat[]>("/chat/", fetcher, {
+  const chats = useSWR<IChat[]>("/chat/", fetcher, {
     refreshInterval: 20000,
   });
   const { user } = useContext(UserContext);
@@ -44,7 +44,7 @@ function Home() {
     }
   }, [chats.data, user]);
 
-  return <MessageView />
+  return <Chat />
   
 }
 

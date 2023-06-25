@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { Box, List } from "@mui/material";
 
 import MessageItem from "./MessageItem";
-import { Message } from "./MessageView";
+import { Message } from "../chat/MessageView";
 
 type MessagesProps = {
   messages: Message[],
