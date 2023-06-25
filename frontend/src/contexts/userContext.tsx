@@ -7,6 +7,10 @@ import {
   useEffect,
 } from "react";
 
+import useSWR from "swr";
+
+import { fetcher } from "../helper/axios";
+
 export type User = {
   _id: string;
   username: string;
@@ -17,6 +21,10 @@ export type User = {
 export interface UserContextInterface {
   user: User;
   setUser: Dispatch<SetStateAction<User>>;
+  users: User[],
+  setUsers: Dispatch<SetStateAction<User[]>>;
+  error: any;
+  isLoading: boolean;
 }
 
 const initialState = {
@@ -26,13 +34,21 @@ const initialState = {
     username: "",
     imageURL: "",
   },
-  setUser: (_user: User) => {},
+  setUser: () => {},
+  setUsers: () => {},
+  users: [],
+  error: null,
+  isLoading: false,
 } as UserContextInterface;
 
 export const UserContext = createContext(initialState);
 
 export type UserProviderProps = {
   children: ReactNode;
+};
+
+type SWRResponse = {
+  users: User[];
 };
 
 function UserProvider({ children }: UserProviderProps) {
@@ -42,16 +58,25 @@ function UserProvider({ children }: UserProviderProps) {
     username: "",
     imageURL: ""
   });
+  const [users, setUsers] = useState<User[]>([]);
+
+  const { error, data, isLoading } = useSWR<SWRResponse>("/users/", fetcher, {
+    refreshInterval: 20000,
+  });
 
   useEffect(() => {
-    let userInfo = localStorage.getItem("userInfo");
+    if (data) setUsers(data.users);
+  }, [data?.users])
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       setUser(JSON.parse(userInfo) as User);
     }
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, users, setUsers, error, isLoading }}>
       {children}
     </UserContext.Provider>
   );

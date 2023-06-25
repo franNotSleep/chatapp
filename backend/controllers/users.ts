@@ -76,7 +76,7 @@ const registerUser = asyncHandler(
 
 
 // @desc Get all users
-// @route GET /api/users/
+// @route GET /api/users?search=
 // @access Private 
 const getUsers = asyncHandler(
   async (
@@ -85,7 +85,17 @@ const getUsers = asyncHandler(
     next: NextFunction
   ) => {
 
-    const users = await User.find({ _id: { $ne: req.user?._id }});
+    const query = req.query.search 
+      ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i"} },
+          { email: { $regex: req.query.search, $options: "i"} },
+        ]
+      } : {};
+
+    const users = await User
+      .find(query)
+      .find({ _id: { $ne: req.user?._id }});
 
     res.status(200).json({users});
   }

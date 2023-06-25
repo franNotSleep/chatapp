@@ -6,6 +6,7 @@ import { socket } from "../service/socket";
 import { UserContext } from "../contexts/userContext";
 
 import MenuIcon from "@mui/icons-material/Menu";
+import SearchUsers from "./user/SearchUsers";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -47,11 +48,10 @@ export default function Navbar() {
     <Box>
       <CssBaseline />
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between"}}>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1 }}
           >
             <Avatar 
               src={user.imageURL}
@@ -59,6 +59,7 @@ export default function Navbar() {
               onClick={handleToProfile}
             />
           </Typography>
+          <SearchUsers />
           <IconButton onClick={handleClick}>
             <MenuIcon />
           </IconButton>
