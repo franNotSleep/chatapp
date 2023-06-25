@@ -4,7 +4,7 @@ import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 
 import SendIcon from "@mui/icons-material/Send";
 import { axiosService } from "../../helper/axios";
-import { Message } from "../chat/MessageView";
+import { Message } from "../chat/Chat";
 import { ChatContext } from "../../contexts/chatContext";
 import { socket } from "../../service/socket";
 import { Form } from "react-router-dom";
@@ -46,6 +46,9 @@ const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
 
         // Emit message
         socket.emit("message", data.message);
+
+        // user stop typing
+        socket.emit("stop", chat?._id);
       })
       .catch((e) => {
         console.log(e);
@@ -68,7 +71,7 @@ const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
         }
       />
     </Form>
-      );
+  );
 };
 
 export default MessageForm;

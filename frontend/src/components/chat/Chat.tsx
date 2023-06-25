@@ -9,8 +9,6 @@ import Messages from "../messages/Messages";
 import ChatFooter from "./ChatFooter";
 
 import React, { useState } from "react";
-import typingAnimation from "../../assets/typing.json";
-import Lottie from "lottie-react";
 
 export interface Message {
   _id: string;
@@ -66,6 +64,7 @@ const Chat = () => {
     chatId = chat?._id;
   }, [chat]);
 
+
   return (
     <Box
       sx={{
@@ -77,17 +76,7 @@ const Chat = () => {
       {chat ? (
         <React.Fragment>
           <ChatHeader setMessages={setMessages} />
-          <Messages messages={messages}/>
-          {isTyping && (
-            <Box
-              sx={{
-                width: "50px",
-                height: "50px",
-              }}
-            >
-              <Lottie animationData={typingAnimation} loop={true} />
-            </Box>
-          )}
+          <Messages messages={messages} typing={isTyping}/>
           <ChatFooter messages={messages} setMessages={setMessages} />
         </React.Fragment>
       ) : (

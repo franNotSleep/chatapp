@@ -1,15 +1,19 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
 
-import { Box, List } from "@mui/material";
+import typingAnimation from "../../assets/typing.json";
+import Lottie from "lottie-react";
+
+import { Box, List, ListItem } from "@mui/material";
 
 import MessageItem from "./MessageItem";
-import { Message } from "../chat/MessageView";
+import { Message } from "../chat/Chat";
 
 type MessagesProps = {
   messages: Message[],
+  typing: boolean
 }
 
-const Messages = ({ messages }: MessagesProps ) => {
+const Messages = ({ messages, typing }: MessagesProps ) => {
   const targetRef = useRef<HTMLDivElement | null>(null); 
 
   useEffect(() => {
@@ -30,9 +34,15 @@ return (
         height: "300px",
         overflow: "auto"
       }}>
+
       {messages.map((message) => (
         <MessageItem message={message} key={message._id} />
       ))}
+      {typing && (
+        <ListItem sx={{ width: "100px", height: "100px", alignSelf: "flex-start" }}>
+          <Lottie animationData={typingAnimation} loop={true} />
+        </ListItem>
+      )}
       <div ref={targetRef}/>
     </List>
   );
