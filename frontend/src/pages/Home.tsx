@@ -1,5 +1,5 @@
 import Chat from "../components/chat/Chat";
-import ChatProvider, { Chat as IChat } from "../contexts/chatContext";
+import { Chat as IChat } from "../contexts/chatContext";
 import useSWR from "swr";
 
 import { fetcher } from "../helper/axios";

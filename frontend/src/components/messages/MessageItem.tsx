@@ -1,5 +1,5 @@
 import { Typography, Box, ListItem, ListItemText } from "@mui/material";
-import { Message } from "../chat/ChatView";
+import { Message } from "../chat/Chat";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/userContext";
 import { format } from "timeago.js";

@@ -15,6 +15,7 @@ import messageRouter from "./routes/messages.js";
 import chatRouter from "./routes/chats.js";
 import Message, { IMessage } from "./models/message.js";
 import { IUser } from "./models/user.js";
+import path from "path";
 
 dotenv.config();
 
@@ -100,12 +101,19 @@ if (process.env.NODE_ENV == "development") {
 }
 
 // Connect DB
-connectDB().then(() => {
-  Message.deleteMany().exec();
-});
+connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
+
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+  app.get('*', (req: Request, res: Response) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+  })
+}
 
 // Routes
 app.use("/api/users/", userRoute);

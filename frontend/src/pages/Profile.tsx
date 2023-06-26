@@ -1,4 +1,4 @@
-import {  Tooltip, Container, Divider, IconButton, Paper, Stack, Typography } from "@mui/material";
+import {  Tooltip, Container, IconButton, Paper, Typography } from "@mui/material";
 
 import UserCard from "../components/user/UserCard.tsx";
 import { useEffect, useState } from "react";

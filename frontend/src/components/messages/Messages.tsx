@@ -1,9 +1,9 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import typingAnimation from "../../assets/typing.json";
 import Lottie from "lottie-react";
 
-import { Box, List, ListItem } from "@mui/material";
+import { List, ListItem } from "@mui/material";
 
 import MessageItem from "./MessageItem";
 import { Message } from "../chat/Chat";
