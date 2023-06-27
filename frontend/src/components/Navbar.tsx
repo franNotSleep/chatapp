@@ -48,19 +48,25 @@ export default function Navbar() {
     <Box>
       <CssBaseline />
       <AppBar position="static">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between"}}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography
             variant="h6"
             component="div"
           >
             <Avatar 
               src={user.imageURL}
-              sx={{ width: 54, height: 54, cursor: "pointer" }}
+              sx={{ 
+                width: 54,
+                height: 54,
+                background: "#F9E0BB",
+                borderRadius: "100%",
+                cursor: "pointer"
+              }}
               onClick={handleToProfile}
             />
           </Typography>
           <SearchUsers />
-          <IconButton onClick={handleClick}>
+          <IconButton color="info" onClick={handleClick} >
             <MenuIcon />
           </IconButton>
         </Toolbar>

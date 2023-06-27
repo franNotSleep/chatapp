@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import bat from "../../assets/bat.png";
 
 import typingAnimation from "../../assets/typing.json";
 import Lottie from "lottie-react";
@@ -22,17 +23,19 @@ const Messages = ({ messages, typing }: MessagesProps ) => {
     }
   }, [messages]);
 
+  console.log(typing);
+
 return (
     <List 
       sx={{ 
-        background: "green", 
         width: "100%", 
         flex: "1 1 auto", 
         display: "flex",
         flexDirection: "column",
         rowGap: 1,
         height: "300px",
-        overflow: "auto"
+        overflow: "auto",
+        background: "#F9E0BB",
       }}>
 
       {messages.map((message) => (

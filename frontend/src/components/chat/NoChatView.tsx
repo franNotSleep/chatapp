@@ -8,8 +8,9 @@ import '@fontsource/roboto/700.css';
 const NoChatView = () => {
   return (
     <Box sx={{
-      border: "1px solid green",
-      height: "100%"
+      background: "#884A39",
+      height: "100%",
+      borderLeft: "1px solid #F9E0BB"
 
     }}>
       <Box sx={{

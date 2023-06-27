@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import MessageForm from "../messages/MessageForm";
 import { Message } from "./Chat";
 import { Box } from "@mui/material";
@@ -12,9 +12,8 @@ const ChatFooter = ({ messages, setMessages }: MessageFooterProps) => {
   return (
     <Box
       sx={{
-        background: "#E3F4F4",
+        background: "#884A39",
         padding: "10px",
-        borderRadius: "20px"
       }}
     >
       <MessageForm

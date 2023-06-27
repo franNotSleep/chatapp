@@ -5,7 +5,6 @@ import {
   Avatar,
   ListItemText,
   Badge,
-  Divider,
   Stack,
 } from "@mui/material";
 import { useContext } from "react";
@@ -20,8 +19,10 @@ type UserItemProps = {
 };
 
 const UserItem = ({ user, online }: UserItemProps) => {
-  const { setChat, setCurrentContact } = useContext(ChatContext);
+  const { setChat, setCurrentContact, chat } = useContext(ChatContext);
   const navigate = useNavigate();
+
+  const isSelectedChat = chat?.users.includes(user._id) ? true : false;
 
   const handleClick = () => {
     // get chat
@@ -41,16 +42,18 @@ const UserItem = ({ user, online }: UserItemProps) => {
     <ListItem
       sx={{
         cursor: "pointer",
-        background: "#CBD4C2",
-        mb: 2,
-        borderRadius: "20px",
+        borderRadius: "10px",
+        background: isSelectedChat ? "#FFC26F" : "" ,
+        '&:hover': {
+           background: "#E9E1C3",
+        },
       }}
       onClick={handleClick}
     >
       <Stack direction={"row"} spacing={1}>
         <ListItemAvatar
           sx={{
-            background: "#C9F9FF",
+            background: "#F9E0BB",
             borderRadius: "100%",
           }}
         >
@@ -66,7 +69,6 @@ const UserItem = ({ user, online }: UserItemProps) => {
             <Avatar sx={{ width: 56, height: 56 }} src={user.imageURL} />
           </Badge>
         </ListItemAvatar>
-        <Divider orientation="vertical" />
         <ListItemText primary={user.username} secondary={user.email} />
       </Stack>
     </ListItem>

@@ -1,4 +1,4 @@
-import { Typography, Box, ListItem, ListItemText } from "@mui/material";
+import { ListItem, ListItemText } from "@mui/material";
 import { Message } from "../chat/Chat";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/userContext";
@@ -23,7 +23,7 @@ const MessageItem = ({ message }: MessageItemProps) => {
         primary={message.content}
         secondary={format(message.createdAt)}
         sx={{
-          background: fromSelf ? "#A675A1" : "#CEA2AC",
+          background: fromSelf ? "#1B9AAA" : "#884A39",
           borderRadius: "10px",
           padding: 1,
         }}

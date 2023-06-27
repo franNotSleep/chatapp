@@ -23,8 +23,6 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const { chat } = useContext(ChatContext);
   const [isTyping, setIsTyping] = useState(false);
-  let chatId;
-
   useEffect(() => {
     socket.on("message-response", (newMessage: Message) => {
       if (chat?._id === newMessage.to) {
@@ -61,7 +59,6 @@ const Chat = () => {
           console.log(e);
         });
     }
-    chatId = chat?._id;
   }, [chat]);
 
 

@@ -45,7 +45,6 @@ function Home() {
   }, [chats.data, user]);
 
   return <Chat />
-  
 }
 
 export default Home;

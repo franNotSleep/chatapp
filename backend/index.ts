@@ -101,10 +101,18 @@ if (process.env.NODE_ENV == "development") {
 }
 
 // Connect DB
-connectDB();
+connectDB().then(() => {
+  Message.deleteMany();
+});
 
 app.use(express.json());
 app.use(cookieParser());
+
+
+// Routes
+app.use("/api/users/", userRoute);
+app.use("/api/message/", messageRouter);
+app.use("/api/chat/", chatRouter);
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
@@ -114,11 +122,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
   })
 }
-
-// Routes
-app.use("/api/users/", userRoute);
-app.use("/api/message/", messageRouter);
-app.use("/api/chat/", chatRouter);
 
 // Error Middleware
 app.use(errorHandler);

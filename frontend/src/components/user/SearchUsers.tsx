@@ -27,12 +27,12 @@ const SearchUsers = () => {
 
   return (
       <OutlinedInput
-        sx={{ borderRadius: "30px" }}
+        sx={{ borderRadius: "10px", height: "40px", marginX: 2 }}
         placeholder="Search"
         onChange={handleChange}
         endAdornment={
           <InputAdornment position="end">
-            <IconButton type="submit">
+            <IconButton color="info" type="submit">
               <SearchIcon />
             </IconButton>
           </InputAdornment>

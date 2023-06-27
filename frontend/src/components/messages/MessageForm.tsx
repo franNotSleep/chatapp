@@ -58,13 +58,14 @@ const MessageForm = ({ setMessages, messages }: MessageFormProps) => {
     <Form onSubmit={handleSubmit}>
       <OutlinedInput
         fullWidth
-        sx={{ borderRadius: "30px" }}
+        sx={{ borderRadius: "30px", background: "#FFC26F" }}
+
         placeholder="Message"
         value={content}
         onChange={handleChange}
         endAdornment={
           <InputAdornment position="end">
-            <IconButton type="submit">
+            <IconButton type="submit" color="info">
               <SendIcon />
             </IconButton>
           </InputAdornment>

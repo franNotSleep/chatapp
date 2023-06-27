@@ -1,4 +1,4 @@
-import {  Tooltip, Container, IconButton, Paper, Typography } from "@mui/material";
+import {  Tooltip, Box, IconButton, Paper, Typography, Card, CardActions, CardContent } from "@mui/material";
 
 import UserCard from "../components/user/UserCard.tsx";
 import { useEffect, useState } from "react";
@@ -6,23 +6,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import { options } from "../service/rapidapi.js";
+
 function Profile() {
   const [quote, setQuote] = useState({
     author: "",
     text: ""
   });
   const navigate = useNavigate();
-  const options = {
-    method: 'GET',
-    url: 'https://quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com/quote',
-    params: {
-      token: 'ipworld.info'
-    },
-    headers: {
-      'X-RapidAPI-Key': 'cd3a82bd69msh13c8197d7bb0d09p172bd4jsnf7b769fca256',
-      'X-RapidAPI-Host': 'quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com'
-    }
-  };
 
   useEffect(() => {
     axios
@@ -36,23 +27,27 @@ function Profile() {
   }, [])
 
   return (
-    <Container maxWidth="xs">
+    <Box sx={{ background: "#884A39", height: "100%"}}>
       <Tooltip title="Go Back">
-        <IconButton onClick={() => { navigate("/") }}>
+        <IconButton onClick={() => { navigate("/") }} color="info" sx={{ mb: 3 }}>
           <ArrowBackIcon />
         </IconButton>
       </Tooltip>
-      <Typography variant="h3">Profile</Typography>
       <UserCard />
-      <Typography variant="h5">Motivational Quotes</Typography>
-      <Paper sx={{
-        padding: "3px",
-        marginTop: "5px",
-      }}>
-        <Typography textAlign={"center"} variant="body2">"{quote.text}"</Typography>
-        <Typography textAlign={"center"} variant="caption">-{quote.author}</Typography>
-      </Paper>
-    </Container>
+    <Card sx={{ width: 275, margin: "auto", mt: 2, background: "#F9E0BB" }}>
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} gutterBottom>
+          Motivational Quote
+        </Typography>
+        <Typography sx={{ mb: 1, ml: 2, fontSize: 14 }} color="text.secondary">
+          "{quote.text}"
+        </Typography>
+        <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
+          -{quote.author} 
+        </Typography>
+        </CardContent>
+    </Card>
+    </Box>
   );
 }
 

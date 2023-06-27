@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useContext } from "react";
-import { Box, Typography, Stack, Avatar, Button } from "@mui/material";
+import { Box, Typography, Stack, Avatar, Button, Paper, AppBar, Toolbar, CssBaseline, List, ListItemAvatar, ListItemText, IconButton, Tooltip } from "@mui/material";
 import { ChatContext } from "../../contexts/chatContext";
 import { Message } from "./Chat";
-
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 type MessageHeaderProps = {
   setMessages: Dispatch<SetStateAction<Message[]>>;
 };
@@ -25,24 +25,36 @@ const ChatHeader = ({ setMessages }: MessageHeaderProps) => {
   };
 
   return (
-    <Box
-      width={"100%"}
-      sx={{
-        background: "lightblue",
-        borderRadius: "10px",
-        flex: "0 1 auto",
-      }}
-    >
-      <Stack direction={"row"} sx={{ padding: 1 }}>
-        <Avatar sx={{ width: 56, height: 56 }} src={currentContact?.imageURL} />
-        <Box flexGrow={1}>
-          <Typography variant="body1">{currentContact?.username}</Typography>
-          <Typography variant="subtitle2">{currentContact?.email}</Typography>
-        </Box>
-        <Button variant="contained" color="error" onClick={onLeave}>
-          Leave Chat
-        </Button>
-      </Stack>
+    <Box>
+      <AppBar position="static">
+      <CssBaseline />
+        <Toolbar>
+          <List sx={{ flexGrow: 1, display: "flex" }}>
+            <ListItemAvatar
+              sx={{
+                background: "#F9E0BB",
+                borderRadius: "100%",
+                mr: 2,
+              }}>
+              <Avatar 
+                sx={{ 
+                  width: 54,
+                  height: 54,
+                }} 
+                src={currentContact.imageURL}/>
+            </ListItemAvatar>
+            <ListItemText 
+              primary={currentContact.username} 
+              secondary={currentContact.email}
+            />
+          </List>
+          <Tooltip title="Leave chat">
+            <IconButton color="info" onClick={onLeave}>
+              <ExitToAppIcon />
+            </IconButton>
+          </Tooltip>
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { isOnline, socket } from "../../service/socket";
 
-import { Box, List } from "@mui/material";
+import { List, Divider } from "@mui/material";
 import { UserContext } from "../../contexts/userContext";
 import UserItem from "./UserItem";
 
@@ -19,26 +19,33 @@ const UsersList = () => {
     };
   }, []);
 
-  if (error) return "An error has ocurred.";
+  console.log(error);
   if (isLoading) return "Loading...";
+  if (error) return "An error has ocurred.";
 
   return (
-    <Box>
       <List
         sx={{
-          bgcolor: "background.paper",
-          border: "1px solid red",
+          height: "100%",
+          overflow: "auto",
+          padding: 2,
         }}
       >
         {users.map((user) => (
-          <UserItem
-            user={user}
-            online={isOnline(onlineUsers, user._id)}
-            key={user._id}
-          />
+          <>
+            <UserItem
+              user={user}
+              online={isOnline(onlineUsers, user._id)}
+              key={user._id}
+            />
+
+          <Divider 
+            variant="inset" 
+            component="li" 
+            sx={{ color: "#000" }} />
+         </>
         ))}
       </List>
-    </Box>
   );
 };
 
