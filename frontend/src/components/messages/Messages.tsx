@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import bat from "../../assets/bat.png";
 
 import typingAnimation from "../../assets/typing.json";
 import Lottie from "lottie-react";
@@ -21,9 +20,7 @@ const Messages = ({ messages, typing }: MessagesProps ) => {
     if (targetRef.current) {
       targetRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
-
-  console.log(typing);
+  }, [messages, typing]);
 
 return (
     <List 

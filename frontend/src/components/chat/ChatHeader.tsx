@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useContext } from "react";
-import { Box, Typography, Stack, Avatar, Button, Paper, AppBar, Toolbar, CssBaseline, List, ListItemAvatar, ListItemText, IconButton, Tooltip } from "@mui/material";
+import { Box, Avatar, AppBar, Toolbar, CssBaseline, List, ListItemAvatar, ListItemText, IconButton, Tooltip } from "@mui/material";
 import { ChatContext } from "../../contexts/chatContext";
 import { Message } from "./Chat";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';

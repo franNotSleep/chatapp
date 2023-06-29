@@ -1,4 +1,4 @@
-import {  Tooltip, Box, IconButton, Paper, Typography, Card, CardActions, CardContent } from "@mui/material";
+import {  Tooltip, Box, IconButton, Typography, Card, CardContent } from "@mui/material";
 
 import UserCard from "../components/user/UserCard.tsx";
 import { useEffect, useState } from "react";
