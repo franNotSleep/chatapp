@@ -102,7 +102,9 @@ if (process.env.NODE_ENV == "development") {
 
 // Connect DB
 connectDB().then(() => {
-  Message.deleteMany();
+  if (process.env.NODE_ENV == "development") {
+    Message.deleteMany();
+  }
 });
 
 app.use(express.json());
