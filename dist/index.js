@@ -6,7 +6,6 @@ import userRoute from "./routes/users.js";
 import errorHandler, { invalidPathHandler } from "./middleware/errorHandler.js";
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import messageRouter from "./routes/messages.js";
@@ -18,20 +17,22 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: process.env.NODE_ENV === "production" ? "http://20.232.8.213:8000" : "http://localhost:5173",
     },
 });
 const port = process.env.PORT || 8000;
 const onlineUsers = {};
 io.on("connection", (socket) => {
+    let currentUser;
     socket.on("join-chat", (chatId) => {
         socket.join(chatId);
     });
-    socket.emit("online-users", Object.values(onlineUsers));
+    socket.emit("online-users", onlineUsers);
     socket.on("setup", (user) => {
         console.log("Welcome " + user._id);
-        onlineUsers[socket.id] = user._id.toString();
-        socket.broadcast.emit("online-users", Object.values(onlineUsers));
+        onlineUsers[user._id.toString()] = socket.id;
+        currentUser = user._id.toString();
+        socket.broadcast.emit("online-users", onlineUsers);
     });
     socket.on("typing", (chatId) => {
         console.log("typing...");
@@ -47,21 +48,20 @@ io.on("connection", (socket) => {
     });
     socket.on("offline", () => {
         console.log("Bye " + socket.id);
-        delete onlineUsers[socket.id];
-        socket.broadcast.emit("online-users", Object.values(onlineUsers));
-        socket.disconnect(true);
+        if (currentUser) {
+            delete onlineUsers[socket.id];
+            socket.broadcast.emit("online-users", onlineUsers);
+            socket.disconnect(true);
+        }
     });
     socket.on("disconnect", () => {
-        console.log("Bye " + socket.id);
-        delete onlineUsers[socket.id];
-        socket.broadcast.emit("online-users", Object.values(onlineUsers));
+        console.log("Bye " + currentUser);
+        if (currentUser) {
+            delete onlineUsers[currentUser];
+            socket.broadcast.emit("online-users", onlineUsers);
+        }
     });
 });
-// Enable CORS
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-}));
 // Sanitize data
 app.use(ExpressMongoSanitize());
 // Set security header
@@ -74,7 +74,9 @@ if (process.env.NODE_ENV == "development") {
 }
 // Connect DB
 connectDB().then(() => {
-    Message.deleteMany();
+    if (process.env.NODE_ENV == "development") {
+        Message.deleteMany();
+    }
 });
 app.use(express.json());
 app.use(cookieParser());

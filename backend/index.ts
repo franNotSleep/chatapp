@@ -29,23 +29,25 @@ const io = new Server(server, {
 const port = process.env.PORT || 8000;
 
 interface OnlineUsers {
-  [socketId: string]: string;
+  [userId: string]: string;
 }
 
 const onlineUsers: OnlineUsers = {};
 
 io.on("connection", (socket) => {
+  let currentUser: string | undefined;
   socket.on("join-chat", (chatId: string) => {
     socket.join(chatId);
   });
 
-  socket.emit("online-users", Object.values(onlineUsers));
+  socket.emit("online-users", onlineUsers);
 
   socket.on("setup", (user: IUser) => {
     console.log("Welcome " + user._id);
-    onlineUsers[socket.id] = user._id.toString();
+    onlineUsers[user._id.toString()] = socket.id; 
+    currentUser = user._id.toString();
 
-    socket.broadcast.emit("online-users", Object.values(onlineUsers));
+    socket.broadcast.emit("online-users", onlineUsers);
   });
 
   socket.on("typing", (chatId: string) => {
@@ -65,15 +67,19 @@ io.on("connection", (socket) => {
 
   socket.on("offline", () => {
     console.log("Bye " + socket.id);
-    delete onlineUsers[socket.id];
-    socket.broadcast.emit("online-users", Object.values(onlineUsers));
-    socket.disconnect(true);
+    if (currentUser) {
+      delete onlineUsers[socket.id];
+      socket.broadcast.emit("online-users", onlineUsers);
+      socket.disconnect(true);
+    }
   });
 
   socket.on("disconnect", () => {
-    console.log("Bye " + socket.id);
-    delete onlineUsers[socket.id];
-    socket.broadcast.emit("online-users", Object.values(onlineUsers));
+    console.log("Bye " + currentUser);
+    if (currentUser) {
+      delete onlineUsers[currentUser];
+      socket.broadcast.emit("online-users", onlineUsers);
+    }
   });
 });
 

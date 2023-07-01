@@ -1,17 +1,21 @@
 import { useState, useEffect, useContext } from "react";
-import { isOnline, socket } from "../../service/socket";
+import { socket } from "../../service/socket";
 
 import { List, Divider } from "@mui/material";
 import { UserContext } from "../../contexts/userContext";
 import UserItem from "./UserItem";
 
+interface OnlineUsers {
+  [userId: string]: string;
+}
+
 const UsersList = () => {
   const { users, error, isLoading } = useContext(UserContext);
 
-  const [onlineUsers, setOnlineUsers] = useState<Array<string>>([]);
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUsers>({});
 
   useEffect(() => {
-    socket.on("online-users", (users: Array<string>) => {
+    socket.on("online-users", (users: OnlineUsers) => {
       setOnlineUsers(users);
     });
     return () => {
@@ -19,7 +23,6 @@ const UsersList = () => {
     };
   }, []);
 
-  console.log(error);
   if (isLoading) return "Loading...";
   if (error) return "An error has ocurred.";
 
@@ -35,7 +38,7 @@ const UsersList = () => {
           <>
             <UserItem
               user={user}
-              online={isOnline(onlineUsers, user._id)}
+              online={Boolean(onlineUsers[user._id])}
               key={user._id}
             />
 

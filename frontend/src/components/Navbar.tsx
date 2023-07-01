@@ -42,8 +42,6 @@ export default function Navbar() {
     handleClose();
   };
 
-  console.log(user);
-
   return (
     <Box>
       <CssBaseline />
