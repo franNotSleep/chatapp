@@ -7,10 +7,6 @@ import {
   useEffect,
 } from "react";
 
-import useSWR from "swr";
-
-import { fetcher } from "../helper/axios";
-
 export type User = {
   _id: string;
   username: string;
@@ -23,8 +19,6 @@ export interface UserContextInterface {
   setUser: Dispatch<SetStateAction<User>>;
   users: User[],
   setUsers: Dispatch<SetStateAction<User[]>>;
-  error: any;
-  isLoading: boolean;
 }
 
 const initialState = {
@@ -35,10 +29,8 @@ const initialState = {
     imageURL: "",
   },
   setUser: () => {},
-  setUsers: () => {},
   users: [],
-  error: null,
-  isLoading: false,
+  setUsers: () => {},
 } as UserContextInterface;
 
 export const UserContext = createContext(initialState);
@@ -47,26 +39,14 @@ export type UserProviderProps = {
   children: ReactNode;
 };
 
-type SWRResponse = {
-  users: User[];
-};
-
 function UserProvider({ children }: UserProviderProps) {
+  const [users, setUsers] = useState<User[]>([]);
   const [user, setUser] = useState({
     _id: "",
     email: "",
     username: "",
     imageURL: ""
   });
-  const [users, setUsers] = useState<User[]>([]);
-
-  const { error, data, isLoading } = useSWR<SWRResponse>("/users/", fetcher, {
-    refreshInterval: 20000,
-  });
-
-  useEffect(() => {
-    if (data) setUsers(data.users);
-  }, [data?.users])
 
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
@@ -76,7 +56,7 @@ function UserProvider({ children }: UserProviderProps) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, users, setUsers, error, isLoading }}>
+    <UserContext.Provider value={{ user, setUser, users, setUsers }}>
       {children}
     </UserContext.Provider>
   );

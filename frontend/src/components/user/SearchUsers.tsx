@@ -13,7 +13,6 @@ import { UserContext } from "../../contexts/userContext";
 const SearchUsers = () => {
   const { setUsers } = useContext(UserContext);
 
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     axiosService
       .get(`/users?search=${e.target.value}`)

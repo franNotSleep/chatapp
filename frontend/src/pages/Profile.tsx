@@ -1,12 +1,13 @@
 import {  Tooltip, Box, IconButton, Typography, Card, CardContent } from "@mui/material";
 
 import UserCard from "../components/user/UserCard.tsx";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { options } from "../service/rapidapi.js";
+import Loading from "../components/feedback/Loading.tsx";
 
 function Profile() {
   const [quote, setQuote] = useState({
@@ -39,12 +40,16 @@ function Profile() {
         <Typography sx={{ fontSize: 14 }} gutterBottom>
           Motivational Quote
         </Typography>
-        <Typography sx={{ mb: 1, ml: 2, fontSize: 14 }} color="text.secondary">
-          "{quote.text}"
-        </Typography>
-        <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
-          -{quote.author} 
-        </Typography>
+          {!quote ? <Loading color="primary"/> : (
+            <React.Fragment>
+              <Typography sx={{ mb: 1, ml: 2, fontSize: 14 }} color="text.secondary">
+                "{quote.text}"
+              </Typography>
+              <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
+                -{quote.author} 
+              </Typography>
+            </React.Fragment>
+          )}
         </CardContent>
     </Card>
     </Box>

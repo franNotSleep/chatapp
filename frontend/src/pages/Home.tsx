@@ -3,7 +3,7 @@ import { Chat as IChat } from "../contexts/chatContext";
 import useSWR from "swr";
 
 import { fetcher } from "../helper/axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import { socket } from "../service/socket";
 import { UserContext } from "../contexts/userContext";
